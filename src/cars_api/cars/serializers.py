@@ -5,10 +5,12 @@ from cars.validators import ExistInVPIC
 
 
 class CarSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    avg_rating = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Car
-        fields = ['make', 'model']
+        fields = ['id', 'make', 'model', 'avg_rating']
         validators = [ExistInVPIC()]
 
 

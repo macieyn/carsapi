@@ -15,6 +15,11 @@ class CarsApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data), 2)
+        keys = data[0].keys()
+        self.assertIn('avg_rating', keys)
+        self.assertIn('id', keys)
+        self.assertIn('model', keys)
+        self.assertIn('make', keys)
 
     def test_post_cars(self):
         response = self.client.post('/cars/', {'make': 'Volkswagen', 'model': 'Jetta'}, format='json')
