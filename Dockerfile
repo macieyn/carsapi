@@ -5,7 +5,7 @@ WORKDIR /app/
 
 RUN pip install --upgrade pip \
     && pip install pipenv
-# RUN pipenv install --system
+RUN pipenv install --system
 
 EXPOSE 8000
 

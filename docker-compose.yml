@@ -9,8 +9,11 @@ services:
       net:
         aliases: 
           - cars
+    environment: 
+      - DJANGO_KEY="=0ay5hg4ee_em4+s-(@y4csvnyks)b6i8sxvjlwc*e)fa_w(%="
     build: .
     container_name: cars
+    command: python cars_api/manage.py runserver 0.0.0.0:8000
     volumes:
       - ./src/:/app/
     ports:
