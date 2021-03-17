@@ -1,0 +1,17 @@
+version: '3.8'
+
+networks:
+  net:
+
+services: 
+  cars:
+    networks:
+      net:
+        aliases: 
+          - cars
+    build: .
+    container_name: cars
+    volumes:
+      - ./src/:/app/
+    ports:
+      - "8000:8000"
