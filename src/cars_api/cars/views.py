@@ -1,7 +1,7 @@
-from rest_framework.generics import ListCreateAPIView, DestroyAPIView
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView, CreateAPIView
 
-from cars.models import Car
-from cars.serializers import CarSerializer
+from cars.models import Car, Rate
+from cars.serializers import CarSerializer, RateSerializer
 
 
 class CarsListCreateView(ListCreateAPIView):
@@ -12,3 +12,8 @@ class CarsListCreateView(ListCreateAPIView):
 class CarsDestroyView(DestroyAPIView):
     queryset = Car.objects
     serializer_class = CarSerializer
+
+
+class RateCreateView(CreateAPIView):
+    queryset = Rate.objects
+    serializer_class = RateSerializer

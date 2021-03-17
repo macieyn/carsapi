@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from cars.models import Car
+from cars.models import Car, Rate
 
 
 class CarsApiTests(APITestCase):
@@ -36,4 +36,18 @@ class CarsApiTests(APITestCase):
         response = self.client.delete('/cars/3/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-        
+
+class RateApiTests(APITestCase):
+
+    def setUp(self):
+        Car.objects.create(make="Volkswagen", model="Golf")
+        Car.objects.create(make="Volkswagen", model="Passat")
+        return super().setUp()
+
+    def test_get_rating_not_allowed(self):
+        response = self.client.get('/rate/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_post_rating(self):
+        response = self.client.post('/rate/', {"car_id" : 1, "rating" : 5}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
