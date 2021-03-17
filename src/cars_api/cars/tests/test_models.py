@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from cars.models import Car
+from cars.models import Car, Rate
 
 
 class CarsTests(TestCase):
