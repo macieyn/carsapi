@@ -23,4 +23,17 @@ class CarsApiTests(APITestCase):
         self.assertEqual(type(data), dict)
         self.assertEqual(Car.objects.count(), 3)
 
+    def test_post_cars_not_exsting_car(self):
+        response = self.client.post('/cars/', {'make': 'Abbadaru', 'model': 'ZFX'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_delete_cars(self):
+        response = self.client.delete('/cars/1/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Car.objects.count(), 1)
+
+    def test_delete_cars_not_found(self):
+        response = self.client.delete('/cars/3/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
         
