@@ -17,13 +17,13 @@ class CarsApiTests(APITestCase):
         self.assertEqual(len(data), 2)
 
     def test_post_cars(self):
-        response = self.client.post('/cars/', {'make': 'Volkswagen', 'model': 'Polo'}, format='json')
+        response = self.client.post('/cars/', {'make': 'Volkswagen', 'model': 'Jetta'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         data = response.json()
         self.assertEqual(type(data), dict)
         self.assertEqual(Car.objects.count(), 3)
 
-    def test_post_cars_not_exsting_car(self):
+    def test_post_cars_fictional_car(self):
         response = self.client.post('/cars/', {'make': 'Abbadaru', 'model': 'ZFX'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
