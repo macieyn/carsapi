@@ -7,6 +7,6 @@ COPY Pipfile.lock /app/
 
 RUN pip install --upgrade pip \
     && pip install pipenv
-RUN pipenv install --system
+RUN pipenv install --system --skip-lock
 
 EXPOSE 8000

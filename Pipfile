@@ -8,6 +8,7 @@ django = "*"
 black = "==20.8b1"
 django-rest-framework = "*"
 requests = "*"
+gunicorn = "*"
 
 [dev-packages]
 black = "==20.8b1"
