@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 # Create your models here.
 
@@ -8,17 +9,12 @@ class Car(models.Model):
 
     @property
     def avg_rating(self):
-        try:
-            rates = self.rate_set.all()
-            return sum(rates) / rates.count()
-        except ZeroDivisionError:
-            return 0.0
-
-    @property
-    def rates_number(self):
-        return self.rate_set.count()
+        result = self.rates.all().aggregate(Avg('rating'))
+        rates_avg = result.get('rating__avg') or 0
+        rates_avg = round(rates_avg, 1)
+        return rates_avg 
 
 
 class Rate(models.Model):
-    car = models.ForeignKey("Car", on_delete=models.CASCADE)
+    car = models.ForeignKey("Car", on_delete=models.CASCADE, related_name='rates')
     rating = models.PositiveSmallIntegerField()
