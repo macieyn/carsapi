@@ -1,6 +1,11 @@
 from django.db.models import Count
 
-from rest_framework.generics import ListCreateAPIView, DestroyAPIView, CreateAPIView, ListAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    DestroyAPIView,
+    CreateAPIView,
+    ListAPIView,
+)
 from rest_framework import filters
 
 from cars.models import Car, Rate
@@ -28,4 +33,4 @@ class CarPopularityListView(ListAPIView):
 
     def get_queryset(self):
         q = super().get_queryset()
-        return q.annotate(rates_number=Count('rates')).order_by('-rates_number')
+        return q.annotate(rates_number=Count("rates")).order_by("-rates_number")

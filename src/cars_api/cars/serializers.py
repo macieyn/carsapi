@@ -9,7 +9,7 @@ class CarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['id', 'make', 'model', 'avg_rating']
+        fields = ["id", "make", "model", "avg_rating"]
         validators = [ExistInVPIC()]
 
 
@@ -18,7 +18,7 @@ class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rate
-        fields = ['rating', 'car_id']
+        fields = ["rating", "car_id"]
         validators = [FitRatingScale(), CarIdExist()]
 
 
@@ -27,4 +27,4 @@ class CarPopularitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['id', 'make', 'model', 'rates_number']
+        fields = ["id", "make", "model", "rates_number"]
