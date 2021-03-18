@@ -3,7 +3,19 @@ version: '3.8'
 networks:
   net:
 
-services: 
+services:
+  db:
+    image: postgres:13.2
+    networks:
+      net:
+        aliases: 
+          - db
+    environment: 
+      - POSTGRES_DB=cars_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
   cars:
     networks:
       net:
@@ -11,9 +23,13 @@ services:
           - cars
     environment: 
       - DJANGO_KEY="=0ay5hg4ee_em4+s-(@y4csvnyks)b6i8sxvjlwc*e)fa_w(%="
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/cars_db
+      - HEROKU=1
     build: .
     container_name: cars
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c "python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./cars/:/app/cars/
       - ./cars_api/:/app/cars_api/
@@ -21,3 +37,5 @@ services:
       - ./Pipfile.lock:/Pipfile.lock
     ports:
       - "8000:8000"
+    depends_on: 
+      - db
