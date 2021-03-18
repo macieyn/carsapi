@@ -74,6 +74,14 @@ class RateApiTests(APITestCase):
         response = self.client.delete('/rate/')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
+    def test_post_rating_out_of_scale(self):
+        response = self.client.post('/rate/', {"car_id" : 1, "rating" : 6}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_post_rating_wrong_car_id(self):
+        response = self.client.post('/rate/', {"car_id" : 99, "rating" : 5}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class CarPopularityApiTests(APITestCase):
 

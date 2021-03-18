@@ -1,11 +1,10 @@
 from rest_framework import serializers
 
 from cars.models import Car, Rate
-from cars.validators import ExistInVPIC, FitRatingScale
+from cars.validators import ExistInVPIC, FitRatingScale, CarIdExist
 
 
 class CarSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
     avg_rating = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -20,7 +19,7 @@ class RateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rate
         fields = ['rating', 'car_id']
-        validators = [FitRatingScale()]
+        validators = [FitRatingScale(), CarIdExist()]
 
 
 class CarPopularitySerializer(serializers.ModelSerializer):

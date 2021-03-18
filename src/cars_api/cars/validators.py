@@ -1,8 +1,12 @@
 import requests
 
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import status
 from rest_framework import serializers
-from django.conf import settings
+
+from cars.models import Car
 
 class ExistInVPIC:
 
@@ -29,4 +33,15 @@ class FitRatingScale:
         rating = data["rating"]
         if not (settings.RATING_SCALE_BOTTOM <= rating <= settings.RATING_SCALE_TOP):
             message = f"Rating is out of scale. Acceptable values are from {settings.RATING_SCALE_BOTTOM} to {settings.RATING_SCALE_TOP}"
+            raise serializers.ValidationError(message, status.HTTP_400_BAD_REQUEST)
+
+
+class CarIdExist:
+
+    def __call__(self, data):
+        car_id = data["car_id"]
+        try:
+            car = Car.objects.get(id=car_id)
+        except ObjectDoesNotExist:
+            message = f"There is no car with id={car_id}"
             raise serializers.ValidationError(message, status.HTTP_400_BAD_REQUEST)
