@@ -15,7 +15,8 @@ services:
     container_name: cars
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./src/:/app/
+      - ./cars/:/app/cars/
+      - ./cars_api/:/app/cars_api/
       - ./Pipfile:/Pipfile
       - ./Pipfile.lock:/Pipfile.lock
     ports:
