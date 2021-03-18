@@ -33,7 +33,7 @@ class FitRatingScale:
     def __call__(self, data):
         rating = data["rating"]
         if not (settings.RATING_SCALE_BOTTOM <= rating <= settings.RATING_SCALE_TOP):
-            message = "Rating is out of scale. Acceptable values are from " 
+            message = "Rating is out of scale. Acceptable values are from "
             f"{settings.RATING_SCALE_BOTTOM} to {settings.RATING_SCALE_TOP}"
             raise serializers.ValidationError(message, status.HTTP_400_BAD_REQUEST)
 
