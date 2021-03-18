@@ -7,19 +7,13 @@ from cars.models import Car, Rate
 class CarsApiTests(APITestCase):
 
     def setUp(self, *args, **kwargs):
-        Car.objects.create(make="Volkswagen", model="Golf")
+        car = Car.objects.create(make="Volkswagen", model="Golf")
         Car.objects.create(make="Volkswagen", model="Passat")
+        Rate.objects.create(car=car, rating=5)
 
     def test_get_cars(self):
         response = self.client.get('/cars/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
-        self.assertEqual(len(data), 2)
-        keys = data[0].keys()
-        self.assertIn('avg_rating', keys)
-        self.assertIn('id', keys)
-        self.assertIn('model', keys)
-        self.assertIn('make', keys)
 
     def test_post_cars(self):
         response = self.client.post('/cars/', {'make': 'Volkswagen', 'model': 'Jetta'}, format='json')
@@ -27,10 +21,6 @@ class CarsApiTests(APITestCase):
         data = response.json()
         self.assertEqual(type(data), dict)
         self.assertEqual(Car.objects.count(), 3)
-
-    def test_post_cars_fictional_car(self):
-        response = self.client.post('/cars/', {'make': 'Abbadaru', 'model': 'ZFX'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
     def test_delete_cars(self):
         response = self.client.delete('/cars/1/')
@@ -41,6 +31,21 @@ class CarsApiTests(APITestCase):
         response = self.client.delete('/cars/3/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_correct_keys_in_response_payload(self):
+        response = self.client.get('/cars/')
+        data = response.json()
+        self.assertEqual(len(data), 2)
+
+        keys = data[0].keys()
+        self.assertEqual(len(keys), 4)
+        self.assertIn('id', keys)
+        self.assertIn('make', keys)
+        self.assertIn('model', keys)
+        self.assertIn('avg_rating', keys)
+        
+    def test_post_cars_fictional_car(self):
+        response = self.client.post('/cars/', {'make': 'Abbadaru', 'model': 'ZFX'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class RateApiTests(APITestCase):
 
@@ -57,6 +62,18 @@ class RateApiTests(APITestCase):
         response = self.client.post('/rate/', {"car_id" : 1, "rating" : 5}, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_put_rating_not_allowed(self):
+        response = self.client.put('/rate/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_patch_rating_not_allowed(self):
+        response = self.client.patch('/rate/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete_rating_not_allowed(self):
+        response = self.client.delete('/rate/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 class CarPopularityApiTests(APITestCase):
 
@@ -69,11 +86,31 @@ class CarPopularityApiTests(APITestCase):
     def test_get_popular_cars(self):
         response = self.client.get('/popular/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_post_rating_not_allowed(self):
+        response = self.client.post('/popular/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_put_rating_not_allowed(self):
+        response = self.client.put('/popular/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_patch_rating_not_allowed(self):
+        response = self.client.patch('/popular/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete_rating_not_allowed(self):
+        response = self.client.delete('/popular/')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_correct_keys_in_response_payload(self):
+        response = self.client.get('/popular/')
         data = response.json()
-        print(data)
         self.assertEqual(len(data), 2)
+
         keys = data[0].keys()
-        self.assertIn('rates_number', keys)
+        self.assertEqual(len(keys), 4)
         self.assertIn('id', keys)
         self.assertIn('model', keys)
         self.assertIn('make', keys)
+        self.assertIn('rates_number', keys)
