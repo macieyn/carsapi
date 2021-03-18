@@ -56,3 +56,24 @@ class RateApiTests(APITestCase):
     def test_post_rating(self):
         response = self.client.post('/rate/', {"car_id" : 1, "rating" : 5}, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class CarPopularityApiTests(APITestCase):
+
+    def setUp(self):
+        car = Car.objects.create(make="Volkswagen", model="Passat")
+        Car.objects.create(make="Volkswagen", model="Golf")
+        Rate.objects.create(car=car, rating=5)
+        return super().setUp()
+
+    def test_get_popular_cars(self):
+        response = self.client.get('/popular/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        print(data)
+        self.assertEqual(len(data), 2)
+        keys = data[0].keys()
+        self.assertIn('rates_number', keys)
+        self.assertIn('id', keys)
+        self.assertIn('model', keys)
+        self.assertIn('make', keys)

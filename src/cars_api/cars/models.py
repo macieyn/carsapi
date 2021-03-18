@@ -14,6 +14,10 @@ class Car(models.Model):
         except ZeroDivisionError:
             return 0.0
 
+    @property
+    def rates_number(self):
+        return self.rate_set.count()
+
 
 class Rate(models.Model):
     car = models.ForeignKey("Car", on_delete=models.CASCADE)
