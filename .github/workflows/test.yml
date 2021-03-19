@@ -3,36 +3,36 @@ name: Test Workflow
 on: push 
 
 jobs:
- tests:
-   runs-on: ubuntu-latest
+  tests:
+    runs-on: ubuntu-latest
 
-   services:
-    image: postgres:13.2
-    env:
-    - POSTGRES_USER: postgres
-    - POSTGRES_PASSWORD: postgres
-    - POSTGRES_BD: cars_db
-    ports:
-    - 5432:5432
-    options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-   steps:
-   - uses: actions/checkout@v2
-   - name: Set up Python 3.8
-   - uses: actions/setup-python@v2
-     with:
-      python-version: 3.8
-   - name: Install dependencies
-      run: | 
-        pip install --upgrade pip
-        pip install pipenv
-        pipenv install --skip-lock --system --dev
-   - name: Run Migrations
-      run: |
-        python manage.py makemigrations
-        python manage.py migrate
+    services:
+      image: postgres:13.2
       env:
-        DATABASE_URL: postgres://postgres:postgres@db:5432/cars_db
-   - name: Run Tests
-      run: python manage.py test
-      
+      - POSTGRES_USER: postgres
+      - POSTGRES_PASSWORD: postgres
+      - POSTGRES_BD: cars_db
+      ports:
+      - 5432:5432
+      options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+        run: | 
+          pip install --upgrade pip
+          pip install pipenv
+          pipenv install --skip-lock --system --dev
+    - name: Run Migrations
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+        env:
+          DATABASE_URL: postgres://postgres:postgres@db:5432/cars_db
+    - name: Run Tests
+        run: python manage.py test
+
