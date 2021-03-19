@@ -23,12 +23,12 @@ jobs:
       with:
         python-version: 3.8
     - name: Install dependencies
-        run: | 
+        run: 
           pip install --upgrade pip
           pip install pipenv
           pipenv install --skip-lock --system --dev
     - name: Run Migrations
-        run: |
+        run:
           python manage.py makemigrations
           python manage.py migrate
         env:
