@@ -1,7 +1,11 @@
 from rest_framework import serializers
+from rest_framework import status
+
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from cars.models import Car, Rate
-from cars.validators import ExistInVPIC, FitRatingScale, CarIdExist
+from cars.helpers import get_models_for_car_make
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -10,7 +14,24 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ["id", "make", "model", "avg_rating"]
-        validators = [ExistInVPIC()]
+        
+    def validate(self, data):
+        make = data["make"]
+        model = data["model"]
+
+        models = get_models_for_car_make(make)
+        
+        if not models:
+            message = f"There is no car make with name {make}"
+            raise serializers.ValidationError(message, 'make')
+        
+        if model not in map(lambda x: x.get("Model_Name"), models):
+            message = f"There is no car model with name {model} for {make}"
+            raise serializers.ValidationError(message, 'model')
+        
+        return data
+
+
 
 
 class RateSerializer(serializers.ModelSerializer):
@@ -19,7 +40,21 @@ class RateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rate
         fields = ["rating", "car_id"]
-        validators = [FitRatingScale(), CarIdExist()]
+        
+    def validate_car_id(self, value):
+        try:
+            Car.objects.get(id=value)
+        except ObjectDoesNotExist:
+            message = f"There is no car with id={value}"
+            raise serializers.ValidationError(message)
+        return value
+
+    def validate_rating(self, value):
+        if not (settings.RATING_SCALE_BOTTOM <= value <= settings.RATING_SCALE_TOP):
+            message = "Rating is out of scale. Acceptable values are from " \
+            f"{settings.RATING_SCALE_BOTTOM} to {settings.RATING_SCALE_TOP}"
+            raise serializers.ValidationError(message)
+        return value
 
 
 class CarPopularitySerializer(serializers.ModelSerializer):
