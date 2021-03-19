@@ -42,7 +42,7 @@ class CarIdExist:
     def __call__(self, data):
         car_id = data["car_id"]
         try:
-            car = Car.objects.get(id=car_id)
+            Car.objects.get(id=car_id)
         except ObjectDoesNotExist:
             message = f"There is no car with id={car_id}"
             raise serializers.ValidationError(message, status.HTTP_400_BAD_REQUEST)
