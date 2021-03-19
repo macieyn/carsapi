@@ -23,16 +23,16 @@ jobs:
       with:
         python-version: 3.8
     - name: Install dependencies
-        run: 
-          pip install --upgrade pip
-          pip install pipenv
-          pipenv install --skip-lock --system --dev
+      run: |
+        pip install --upgrade pip
+        pip install pipenv
+        pipenv install --skip-lock --system --dev
     - name: Run Migrations
-        run:
-          python manage.py makemigrations
-          python manage.py migrate
-        env:
-          DATABASE_URL: postgres://postgres:postgres@db:5432/cars_db
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+      env:
+        DATABASE_URL: postgres://postgres:postgres@db:5432/cars_db
     - name: Run Tests
-        run: python manage.py test
+      run: python manage.py test
 
