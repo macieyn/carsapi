@@ -34,4 +34,7 @@ jobs:
           DJANGO_KEY: =0ay5hg4ee_em4+s-(@y4csvnyks)b6i8sxvjlwc*e)fa_w(%=
       - name: Run Tests
         run: python manage.py test
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+          DJANGO_KEY: =0ay5hg4ee_em4+s-(@y4csvnyks)b6i8sxvjlwc*e)fa_w(%=
 
