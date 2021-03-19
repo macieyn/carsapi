@@ -6,9 +6,9 @@ from cars.models import Car, Rate
 
 class CarsApiTests(APITestCase):
     def setUp(self, *args, **kwargs):
-        car = Car.objects.create(make="Volkswagen", model="Golf")
+        self.car = Car.objects.create(make="Volkswagen", model="Golf")
         Car.objects.create(make="Volkswagen", model="Passat")
-        Rate.objects.create(car=car, rating=5)
+        Rate.objects.create(car=self.car, rating=5)
         return super().setUp()
 
     def test_get_cars(self):
@@ -25,7 +25,7 @@ class CarsApiTests(APITestCase):
         self.assertEqual(Car.objects.count(), 3)
 
     def test_delete_cars(self):
-        response = self.client.delete("/cars/1/")
+        response = self.client.delete(f"/cars/{self.car.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Car.objects.count(), 1)
 
@@ -54,7 +54,7 @@ class CarsApiTests(APITestCase):
 
 class RateApiTests(APITestCase):
     def setUp(self):
-        Car.objects.create(make="Volkswagen", model="Golf")
+        self.car = Car.objects.create(make="Volkswagen", model="Golf")
         Car.objects.create(make="Volkswagen", model="Passat")
         return super().setUp()
 
@@ -63,7 +63,7 @@ class RateApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_post_rating(self):
-        response = self.client.post("/rate/", {"car_id": 1, "rating": 5}, format="json")
+        response = self.client.post("/rate/", {"car_id": self.car.id, "rating": 5}, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_put_rating_not_allowed(self):
@@ -79,7 +79,7 @@ class RateApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_post_rating_out_of_scale(self):
-        response = self.client.post("/rate/", {"car_id": 1, "rating": 6}, format="json")
+        response = self.client.post("/rate/", {"car_id": self.car.id, "rating": 6}, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_rating_wrong_car_id(self):
