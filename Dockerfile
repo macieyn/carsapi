@@ -1,7 +1,10 @@
 FROM python:3.8-buster
 
+ENV PYTHONUNBUFFERED=1
+
 ADD cars/ /app/cars/
 ADD cars_api/ /app/cars_api/
+ADD static/ /app/static/
 
 COPY manage.py /app/
 COPY Pipfile /app/
