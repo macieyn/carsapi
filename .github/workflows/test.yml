@@ -7,12 +7,15 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      image: postgres:13.2
-      env:
-        POSTGRES_PASSWORD: postgres
-      ports:
-        - 5432:5432
-      options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      postgres:
+        image: postgres:13.2
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -25,9 +28,7 @@ jobs:
           pip install pipenv
           pipenv install --skip-lock --system --dev
       - name: Run Migrations
-        run: |
-          python manage.py makemigrations
-          python manage.py migrate
+        run: python manage.py migrate
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
       - name: Run Tests
