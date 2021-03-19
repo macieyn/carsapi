@@ -9,6 +9,7 @@ class CarsApiTests(APITestCase):
         car = Car.objects.create(make="Volkswagen", model="Golf")
         Car.objects.create(make="Volkswagen", model="Passat")
         Rate.objects.create(car=car, rating=5)
+        return super().setUp()
 
     def test_get_cars(self):
         response = self.client.get("/cars/")

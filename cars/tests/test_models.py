@@ -10,9 +10,9 @@ class CarsTests(TestCase):
 
 
 class RateTests(TestCase):
-    def setUp(self, *args, **kwargs):
+    def setUp(self):
         Car.objects.create(make="Volkswagen", model="Golf")
-        return super().setUp(*args, **kwargs)
+        return super().setUp()
 
     def test_create_car_rate(self):
         car = Car.objects.get(id=1)
