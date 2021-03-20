@@ -24,9 +24,7 @@ services:
         aliases: 
           - cars
     environment: 
-      - DJANGO_KEY="=0ay5hg4ee_em4+s-(@y4csvnyks)b6i8sxvjlwc*e)fa_w(%="
       - DATABASE_URL=postgres://postgres:postgres@db:5432/cars_db
-      - HEROKU=1
     build: .
     container_name: cars
     command: >
