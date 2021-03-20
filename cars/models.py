@@ -19,4 +19,6 @@ class Car(models.Model):
 
 class Rate(models.Model):
     car = models.ForeignKey("Car", on_delete=models.CASCADE, related_name="rates")
-    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
