@@ -14,5 +14,6 @@ WORKDIR /app/
 RUN pip install --upgrade pip \
     && pip install pipenv
 RUN pipenv install --skip-lock --system
+RUN python manage.py generateschema --file openapi-schema.yml
 
 EXPOSE 8000

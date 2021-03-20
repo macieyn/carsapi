@@ -63,7 +63,9 @@ class RateApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_post_rating(self):
-        response = self.client.post("/rate/", {"car_id": self.car.id, "rating": 5}, format="json")
+        response = self.client.post(
+            "/rate/", {"car_id": self.car.id, "rating": 5}, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_put_rating_not_allowed(self):
@@ -79,7 +81,9 @@ class RateApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_post_rating_out_of_scale(self):
-        response = self.client.post("/rate/", {"car_id": self.car.id, "rating": 6}, format="json")
+        response = self.client.post(
+            "/rate/", {"car_id": self.car.id, "rating": 6}, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_rating_wrong_car_id(self):
