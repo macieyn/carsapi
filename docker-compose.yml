@@ -38,6 +38,7 @@ services:
       - ./Pipfile:/app/Pipfile
       - ./Pipfile.lock:/app/Pipfile.lock
       - ./static/:/app/static/
+      - ./templates/:/app/templates/
     ports:
       - "8000:8000"
     depends_on: 
