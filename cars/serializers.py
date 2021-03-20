@@ -49,13 +49,6 @@ class RateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(message)
         return value
 
-    def validate_rating(self, value):
-        if not (settings.RATING_SCALE_BOTTOM <= value <= settings.RATING_SCALE_TOP):
-            message = "Rating is out of scale. Acceptable values are from " \
-            f"{settings.RATING_SCALE_BOTTOM} to {settings.RATING_SCALE_TOP}"
-            raise serializers.ValidationError(message)
-        return value
-
 
 class CarPopularitySerializer(serializers.ModelSerializer):
     rates_number = serializers.IntegerField()

@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -18,4 +19,4 @@ class Car(models.Model):
 
 class Rate(models.Model):
     car = models.ForeignKey("Car", on_delete=models.CASCADE, related_name="rates")
-    rating = models.PositiveSmallIntegerField()
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
