@@ -21,11 +21,11 @@ Application is fully dockerized. To start an application run `docker-compose up`
 #### Description
 
 Chosen Python version is 3.8, since it has full support until April 2021 and security support until October 2024.
-Probably not the best choice - maybe 3.9 is a go version - but 3.8 is supported by almost all third party packages.
+Probably not the best choice - maybe 3.9 is a go version - but 3.8 is supported by almost all third party packages, in contrast to 3.9.
 
 My choice for database was SQLite for early development and PostgreSQL for production. Using Postgres was convinient choice when hosting app with Heroku.
 
-As much as possible was written with abstractions provided by django and DRF.
+As much as possible was written with abstractions provided by Django and DRF.
 
 #### Third party packages
 - `Django Rest Framework` - simplifies the process of serializing and validating data, good support, mature package
@@ -40,7 +40,7 @@ As much as possible was written with abstractions provided by django and DRF.
 
 #### Testing
 
-For testing was used django builtin testing framework and it follow OOP paradigm.
+For testing was used Django and DRF builtin testing framework and it follow OOP paradigm.
 
 Tests for models are separated from API tests.
 
