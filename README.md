@@ -6,6 +6,12 @@ Stack: Django, Django Rest Framework, PostgreSQL, Docker
 
 App was written according to the [specification](SPECS.md).
 
+### Live
+
+App is deployed with Heroku and available here: [https://macieyn-cars-api.herokuapp.com/](https://macieyn-cars-api.herokuapp.com/).
+
+At root you can find SwaggerUI API Docs.
+
 #### How to start an app
 
 Application is fully dockerized. To start an application run `docker-compose up`.
@@ -26,6 +32,8 @@ As much as possible was written with abstractions provided by django and DRF.
 - `requests` - reasonable choice for making API calls to third party APIs, good support, mature package
 - `psycopg2-binary` - required for connection to Postgres
 - `dj-database-url` - unables to use url string to connect to database
+- `pyyaml` - yaml data parser for Python, required to render OpenAPI Schema
+- `uritemplate` - used internally to get parameters in path
 - `black` - code formatter, helps in keeping codebase consistent with PEP8 
 - `gunicorn` - required by heroku
 - `whitenoise` - helps in serving staticfiles in production
